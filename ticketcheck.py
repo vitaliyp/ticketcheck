@@ -75,12 +75,15 @@ def check_for_new_tickets(monitor):
 
 
 if __name__=='__main__':
+    logging.basicConfig(filename='ticketcheck.log', level=logging.INFO)
+    logging.info("Script started")
+
     monitors = parse_monitor_config('monitors.json')
     settings = parse_settings('settings.json')
-    monitor = monitors[0]
 
     for monitor in monitors:
         trains = check_for_new_tickets(monitor)
+        logging.info('Found %s trains'%len(trains))
         composer = mailcomposer.MailComposer(recipient=monitor['email'],**settings['email'])
         composer.add_trains(monitor, trains)
         composer.send_mail()        
