@@ -106,10 +106,10 @@ def get_trains(departure_station_id, destination_station_id, departure_date,
             rt['number'] = train['num']
             rt['departure_station_id'] = train['from']['station_id']
             rt['departure_station_name'] = train['from']['station']
-            rt['departure_date'] = ddate
+            rt['departure_datetime'] = ddate
             rt['destination_station_id'] = train['till']['station_id']
             rt['destination_station_name'] = train['till']['station']
-            rt['arrival_date'] = adate
+            rt['arrival_datetime'] = adate
             rt['seats'] = {}
             for t in train['types']:
                rt['seats'][CLASS_LETTERS_UK[t['letter']]] = t['places'] 
