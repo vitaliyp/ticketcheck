@@ -6,13 +6,24 @@ import os
 import datetime
 
 CLASS_LETTERS_UK = {
-        'Л':'class1',
-        'К':'class2',
-        'П':'class3'}
+        'Л':1,
+        'К':2,
+        'П':3}
 
 cjar = cookiejar.CookieJar()
 opener = urllib.request.build_opener(
             urllib.request.HTTPCookieProcessor(cjar))
+
+def get_station_id(name):
+    """ Get id of the station, with matching name.
+    Returns int or None if no such stations exists."""
+
+    stations = get_stations(name)
+    matching_stations = [station for station in stations if station['name']==name]
+    if len(matching_stations)==1:
+        return matching_stations.pop()['id']
+    else:
+        return None
 
 def get_stations(name):
     page = urllib.request.urlopen(
