@@ -129,8 +129,4 @@ def pretty_print_trains(trains):
 
 
 if __name__=='__main__':
-    trains = get_trains(departure_station_id=2200001,
-                        destination_station_id=2218200,
-                        departure_date=datetime.date(2015,3,29),
-                        )
-    print(trains)
+    pass

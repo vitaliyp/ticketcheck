@@ -40,12 +40,4 @@ def update_train_seats(number, departure_datetime, seats):
     connection.close()
 
 if __name__=='__main__':
-    import datetime
-    number = '143K'
-    departure_date = datetime.datetime(2015, 4, 12, 18, 40)
-    seats = {
-            1:10,
-            2:20,
-            3:30}
-    update_train_seats(number, departure_date, seats)
-    print(get_train_seats(number, departure_date))
+    pass
