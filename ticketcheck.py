@@ -84,6 +84,7 @@ if __name__=='__main__':
     for monitor in monitors:
         trains = check_for_new_tickets(monitor)
         logging.info('Found %s trains'%len(trains))
-        composer = mailcomposer.MailComposer(recipient=monitor['email'],**settings['email'])
-        composer.add_trains(monitor, trains)
-        composer.send_mail()        
+        if trains:
+            composer = mailcomposer.MailComposer(recipient=monitor['email'],**settings['email'])
+            composer.add_trains(monitor, trains)
+            composer.send_mail()        
