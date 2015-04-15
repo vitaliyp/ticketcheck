@@ -8,7 +8,10 @@ import datetime
 CLASS_LETTERS_UK = {
         'Л':1,
         'К':2,
-        'П':3}
+        'П':3,
+        'С1':4,
+        'С2':5,
+        'С3':6}
 
 cjar = cookiejar.CookieJar()
 opener = urllib.request.build_opener(

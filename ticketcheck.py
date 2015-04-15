@@ -56,7 +56,11 @@ def parse_settings(filename):
         settings = json.loads(f.read())
     return settings
 
+rides_to_update = []
+
 def check_for_new_tickets(monitor):
+    global rides_to_update
+
     trains = uzbooking.get_trains(
             departure_date = monitor['departure_date'],
             departure_station_id = monitor['departure_station_id'],
@@ -65,12 +69,17 @@ def check_for_new_tickets(monitor):
     trains_with_new_tickets = []
     for train in trains:
         # Check tis train in db
-        seats_in_db = traindb.get_train_seats(train['number'],train['departure_datetime'])
+        seats_in_db = traindb.get_seats(
+                train['number'],
+                monitor['departure_station_name'],
+                train['departure_datetime'],
+                monitor['destination_station_name'])
         for c in monitor['classes']:
             if seats_in_db[c] ==0 and train['seats'][c]>0:
                 trains_with_new_tickets.append(train)
-        # Update train in db
-        traindb.update_train_seats(train['number'],train['departure_datetime'],train['seats'])
+                break
+        # add ride to update queue
+        rides_to_update.append((train,monitor))
     return trains_with_new_tickets
 
 
@@ -88,3 +97,12 @@ if __name__=='__main__':
             composer = mailcomposer.MailComposer(recipient=monitor['email'],**settings['email'])
             composer.add_trains(monitor, trains)
             composer.send_mail()        
+
+    # update_rides
+    for train, monitor in rides_to_update:
+        traindb.update_seats(
+                train['number'],
+                monitor['departure_station_name'],
+                train['departure_datetime'],
+                monitor['destination_station_name'],
+                train['seats'])

@@ -36,10 +36,11 @@ class MailComposer:
                 strlist.append('\t\tDeparture: %s | Arrival: %s\n'%(
                     train['departure_datetime'].strftime(datetime_format),
                     train['arrival_datetime'].strftime(datetime_format)))
-                strlist.append('\t\t%s:%s %s:%s %s:%s\n'%(
-                    classes[1],train['seats'][1],
-                    classes[2],train['seats'][2],
-                    classes[3],train['seats'][3]))
+                strlist.append('\t\t')
+                for k,v in classes.items():
+                    if train['seats'][k]:
+                        strlist.append('%s:%s '%(v,train['seats'][k]))
+                strlist.append('\n')
 
         return ''.join(strlist)
     
