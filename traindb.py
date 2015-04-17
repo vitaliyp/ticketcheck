@@ -38,5 +38,11 @@ def update_seats(number, dep_station, dep_datetime, dest_station, seats):
     connection.commit()
     connection.close()
 
+def clear_rides():
+    with sqlite3.connect('db.sqlite3') as connection:
+        cursor = connection.cursor()
+        cursor.execute('DELETE FROM rides')
+        connection.commit()
+
 if __name__=='__main__':
     pass

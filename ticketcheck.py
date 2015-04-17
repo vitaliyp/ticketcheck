@@ -99,6 +99,7 @@ if __name__=='__main__':
             composer.send_mail()        
 
     # update_rides
+    traindb.clear_rides()
     for train, monitor in rides_to_update:
         traindb.update_seats(
                 train['number'],
