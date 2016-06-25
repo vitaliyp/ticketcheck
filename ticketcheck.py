@@ -75,7 +75,7 @@ def check_for_new_tickets(monitor):
                 train['departure_datetime'],
                 monitor['destination_station_name'])
         for c in monitor['classes']:
-            if seats_in_db[c] ==0 and train['seats'][c]>0:
+            if seats_in_db[c]<train['seats'][c]:
                 trains_with_new_tickets.append(train)
                 break
         # add ride to update queue

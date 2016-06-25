@@ -29,9 +29,11 @@ def get_station_id(name):
         return None
 
 def get_stations(name):
-    page = urllib.request.urlopen(
-                u"http://booking.uz.gov.ua/purchase/station/%s/"%urllib.parse.quote(name)
-            ).read().decode('utf8')
+    req = urllib.request.Request(u"http://booking.uz.gov.ua/purchase/station/%s/"%urllib.parse.quote(name))
+
+    req.add_header('User-Agent', 'Google Chrome')
+            
+    page = urllib.request.urlopen(req).read().decode('utf8')
     stations = json.loads(page)
     result = []
     for station in stations['value']:
@@ -42,7 +44,11 @@ def get_stations(name):
     return result
 
 def get_token():
-    page = opener.open("http://booking.uz.gov.ua").read().decode('utf8')
+    req = urllib.request.Request("http://booking.uz.gov.ua")
+    
+    req.add_header('User-Agent', 'Google Chrome')
+
+    page = opener.open(req).read().decode('utf8')
     p = re.compile(r'\$\$_=~\[\];.*\(\)\)\(\);')
     code = p.search(page).group()
 
@@ -88,11 +94,14 @@ def get_trains(departure_station_id, destination_station_id, departure_date,
         'station_id_till':destination_station_id,
         'date_dep':departure_date.strftime('%d.%m.%Y'),
         'station_id_from':departure_station_id,
-        'time_dep':departure_time.strftime('%H:%M')}
+        'time_dep':departure_time.strftime('%H:%M')
+    }
     headers = {
         'GV-Ajax':'1',
         'GV-Referer':'http://booking.uz.gov.ua/',
-        'GV-Token':get_token()}
+        'GV-Token':get_token(),
+        'User-Agent':'Google Chrome'
+    }
     data = urllib.parse.urlencode(values).encode('utf8')
     req = urllib.request.Request(url,data,headers)
     response = opener.open(req)
